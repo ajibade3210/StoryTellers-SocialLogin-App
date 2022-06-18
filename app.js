@@ -8,6 +8,7 @@ const passport = require("passport");
 const session = require("express-session");
 const connectDB = require("./config/db");
 const MongoStore = require("connect-mongo");
+const methodOverride = require("method-override");
 require("dotenv").config();
 const { engine } = require("express-handlebars");
 const storiesRouter = require("./routes/stories.routes");
@@ -19,6 +20,18 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//METHOD OVERRIDE
+app.use(
+  methodOverride(function (req, res) {
+    if (req.body && typeof req.body === "object" && "_method" in req.body) {
+      // look in urlencoded POST bodies and delete it
+      var method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
+  })
+);
+
 //Passport Config
 require("./config/passport")(passport);
 
@@ -27,12 +40,22 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+//HandleBars Helper
+const {
+  formatDate,
+  stripTags,
+  truncate,
+  editIcon,
+  select,
+} = require("./helpers/hbs");
+
 //VIEW = Handlebars
 // app.engine(".hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
 // app.set("view engine", ".hbs");
 app.engine(
   ".hbs",
   engine({
+    helpers: { formatDate, stripTags, truncate, editIcon, select },
     extname: ".hbs",
   })
 );
@@ -55,6 +78,12 @@ app.use(
 //Adding Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Set Globar VAR
+app.use(function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
 
 //Static Folder
 app.use(express.static(path.join(__dirname, "public")));

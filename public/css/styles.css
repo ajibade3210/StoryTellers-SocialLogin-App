@@ -11,3 +11,16 @@ p {
 .darken-1 {
   margin: 10px;
 }
+
+.fa-small {
+  font-size: 16px;
+}
+
+.btn-float {
+  float: left;
+  margin-right: 10px;
+}
+
+.img-small {
+  width: 100px;
+}

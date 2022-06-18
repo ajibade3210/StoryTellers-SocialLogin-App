@@ -18,6 +18,7 @@ authRouter.get(
   }),
   (req, res) => {
     console.log("Google Called Us Back~~ ");
+    console.log("PASSPORTT:-", req);
     res.redirect("/dashboard");
   }
 );
@@ -25,8 +26,12 @@ authRouter.get(
 //@desc     Logout User
 //@route    GET /auth/logout
 authRouter.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 });
 
 module.exports = authRouter;
