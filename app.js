@@ -49,9 +49,6 @@ const {
   select,
 } = require("./helpers/hbs");
 
-//VIEW = Handlebars
-// app.engine(".hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
-// app.set("view engine", ".hbs");
 app.engine(
   ".hbs",
   engine({
@@ -59,6 +56,10 @@ app.engine(
     extname: ".hbs",
   })
 );
+
+//VIEW = Handlebars
+// app.engine(".hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
+// app.set("view engine", ".hbs");
 app.set("view engine", ".hbs");
 app.set("views", "./views");
 
