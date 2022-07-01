@@ -96,9 +96,6 @@ app.use("/stories", storiesRouter);
 
 const PORT = process.env.PORT || 3000;
 
-// app.listen(PORT, () => {
-//   console.log(`Listening On Port: ${process.env.NODE_ENV} ${PORT}`);
-// });
 
 https
   .createServer(
